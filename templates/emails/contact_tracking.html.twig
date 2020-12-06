@@ -1,0 +1,7 @@
+Hallo {{ infectedPerson.firstname }} {{ infectedPerson.lastname }}
+
+um die Nachverfolgung Ihrer Kontakte zu erleichtern, bitten wir Sie folgendes Formular aufzurufen und Ihre Kontakt Personen der letzen zwei Wochen einzutragen.
+
+<a href="{{ url('contact_person_new', {'contactTrackingId': infectedPerson.contactTrackingId}) }}">Formular</a>
+
+i.A Mensch vom Gesundheitsamt

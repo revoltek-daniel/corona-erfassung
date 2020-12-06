@@ -80,6 +80,11 @@ class ContactPerson
      */
     private $InfectedPerson;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $salutation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -225,6 +230,18 @@ class ContactPerson
     public function setInfectedPerson(?InfectedPerson $InfectedPerson): self
     {
         $this->InfectedPerson = $InfectedPerson;
+
+        return $this;
+    }
+
+    public function getSalutation(): ?string
+    {
+        return $this->salutation;
+    }
+
+    public function setSalutation(string $salutation): self
+    {
+        $this->salutation = $salutation;
 
         return $this;
     }

@@ -98,6 +98,21 @@ class InfectedPerson
      */
     private $contactPersons;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $mailSendAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $salutation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $contactTrackingId;
+
     public function __construct()
     {
         $this->contactPersons = new ArrayCollection();
@@ -327,6 +342,42 @@ class InfectedPerson
                 $contactPerson->setInfectedPerson(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMailSendAt(): ?\DateTimeInterface
+    {
+        return $this->mailSendAt;
+    }
+
+    public function setMailSendAt(?\DateTimeInterface $mailSendAt): self
+    {
+        $this->mailSendAt = $mailSendAt;
+
+        return $this;
+    }
+
+    public function getSalutation(): ?string
+    {
+        return $this->salutation;
+    }
+
+    public function setSalutation(string $salutation): self
+    {
+        $this->salutation = $salutation;
+
+        return $this;
+    }
+
+    public function getContactTrackingId(): ?string
+    {
+        return $this->contactTrackingId;
+    }
+
+    public function setContactTrackingId(?string $contactTrackingId): self
+    {
+        $this->contactTrackingId = $contactTrackingId;
 
         return $this;
     }

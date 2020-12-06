@@ -11,7 +11,20 @@
 
     </head>
     <body class="ea">
-        {% block body %}{% endblock %}
+        <div class="wrapper">
+
+            <div class="content-wrapper">
+                <div class="content">
+                    <section id="main" class="content-body">
+                        <div>
+                            <div class="content-panel">
+                                {% block body %}{% endblock %}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
