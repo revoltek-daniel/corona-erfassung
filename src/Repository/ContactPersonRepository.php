@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ContactPerson;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method ContactPerson|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,6 +19,42 @@ class ContactPersonRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ContactPerson::class);
     }
+
+    public function findExisting(ContactPerson $contactPerson)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $query = $qb
+            ->andWhere(
+                $qb->expr()->andX(
+                    $qb->expr()->andX(
+                        $qb->expr()->eq('c.firstname', ':firstname'),
+                        $qb->expr()->eq('c.lastname', ':lastname'),
+                        $qb->expr()->eq('c.zip', ':zip'),
+                        $qb->expr()->eq('c.city', ':city')
+                    ),
+                    $qb->expr()->orX(
+                        $qb->expr()->andX(
+                            $qb->expr()->eq('c.phone', ':phone')
+                        ),
+                        $qb->expr()->andX(
+                            $qb->expr()->eq('c.email', ':email')
+                        )
+                    )
+                )
+            )
+            ->setParameter('phone', $contactPerson->getPhone())
+            ->setParameter('firstname', $contactPerson->getFirstname())
+            ->setParameter('lastname', $contactPerson->getLastname())
+            ->setParameter('email', $contactPerson->getEmail())
+            ->setParameter('zip', $contactPerson->getZip())
+            ->setParameter('city', $contactPerson->getCity())
+        ;
+
+        return $query->getQuery()
+            ->getOneOrNullResult();
+    }
+
 
     // /**
     //  * @return ContactPerson[] Returns an array of ContactPerson objects

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ContactPerson;
 use App\Entity\InfectedPerson;
 use App\Form\ContactPersonType;
+use App\Repository\ContactPersonRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,7 @@ class ContactPersonController extends AbstractController
      * @Route("/new/{contactTrackingId}", name="contact_person_new", methods={"GET","POST"})
      *
      */
-    public function new(Request $request, InfectedPerson $infectedPerson): Response
+    public function new(Request $request, InfectedPerson $infectedPerson, ContactPersonRepository $contactPersonRepository): Response
     {
         $form = $this->createFormBuilder()->add(
             'contactPersons',
@@ -44,7 +45,12 @@ class ContactPersonController extends AbstractController
 
             /** @var ContactPerson $contactPerson */
             foreach ($data['contactPersons'] as $contactPerson) {
-              //  dd($contactPerson);
+
+                $existingContact = $contactPersonRepository->findExisting($contactPerson);
+                if ($existingContact instanceof ContactPerson) {
+                    $contactPerson = $existingContact;
+                }
+
                 $contactPerson->addInfectedPerson($infectedPerson);
                 $entityManager->persist($contactPerson);
             }
