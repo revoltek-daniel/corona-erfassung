@@ -2,7 +2,7 @@
 {% set prototype = form_widget(form.contactPersons.vars.prototype) %}
 
     <ul class="contact-persons" data-prototype="{{ prototype|e('html_attr') }}">
-        <li>{{ prototype| raw }}</li>
+        <li>{{ prototype| replace({'__name__':0}) | raw  }}</li>
     </ul>
 
 

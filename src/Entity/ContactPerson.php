@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ContactPersonRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -76,14 +78,19 @@ class ContactPerson
     private $tested;
 
     /**
-     * @ORM\ManyToOne(targetEntity=InfectedPerson::class, inversedBy="contactPersons")
-     */
-    private $infectedPerson;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $salutation;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=InfectedPerson::class, mappedBy="contactPersons")
+     */
+    private $infectedPeople;
+
+    public function __construct()
+    {
+        $this->infectedPeople = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -222,18 +229,6 @@ class ContactPerson
         return $this;
     }
 
-    public function getInfectedPerson(): ?InfectedPerson
-    {
-        return $this->infectedPerson;
-    }
-
-    public function setInfectedPerson(?InfectedPerson $infectedPerson): self
-    {
-        $this->infectedPerson = $infectedPerson;
-
-        return $this;
-    }
-
     public function getSalutation(): ?string
     {
         return $this->salutation;
@@ -249,5 +244,32 @@ class ContactPerson
     public function __toString(): string
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    /**
+     * @return Collection|InfectedPerson[]
+     */
+    public function getInfectedPeople(): Collection
+    {
+        return $this->infectedPeople;
+    }
+
+    public function addInfectedPerson(InfectedPerson $infectedPerson): self
+    {
+        if (!$this->infectedPeople->contains($infectedPerson)) {
+            $this->infectedPeople[] = $infectedPerson;
+            $infectedPerson->addContactPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInfectedPerson(InfectedPerson $infectedPerson): self
+    {
+        if ($this->infectedPeople->removeElement($infectedPerson)) {
+            $infectedPerson->removeContactPerson($this);
+        }
+
+        return $this;
     }
 }

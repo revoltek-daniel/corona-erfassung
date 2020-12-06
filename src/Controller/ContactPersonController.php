@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\ContactPerson;
 use App\Entity\InfectedPerson;
-use App\Form\CollectContactPersonsType;
 use App\Form\ContactPersonType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -27,12 +26,12 @@ class ContactPersonController extends AbstractController
             'contactPersons',
             CollectionType::class,
             [
-                'mapped' => false,
                 'entry_type' => ContactPersonType::class,
                 'entry_options' => [
                     'label' => false
                 ],
                 'allow_add' => true,
+                'by_reference' => false
             ]
         )->getForm();
 
@@ -43,7 +42,10 @@ class ContactPersonController extends AbstractController
 
             $data = $form->getData();
 
-            foreach ($data as $contactPerson) {
+            /** @var ContactPerson $contactPerson */
+            foreach ($data['contactPersons'] as $contactPerson) {
+              //  dd($contactPerson);
+                $contactPerson->addInfectedPerson($infectedPerson);
                 $entityManager->persist($contactPerson);
             }
             $entityManager->flush();
@@ -53,7 +55,6 @@ class ContactPersonController extends AbstractController
 
         return $this->render('contact_person/new.html.twig', [
             'infectedPerson' => $infectedPerson,
-            'controllerName' => $infectedPerson,
             'form' => $form->createView(),
         ]);
     }

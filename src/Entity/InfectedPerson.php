@@ -94,11 +94,6 @@ class InfectedPerson
     private $inQuarantine = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=ContactPerson::class, mappedBy="InfectedPerson")
-     */
-    private $contactPersons;
-
-    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $mailSendAt;
@@ -117,6 +112,11 @@ class InfectedPerson
      * @ORM\Column(type="boolean")
      */
     private $contactsCollected = false;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=ContactPerson::class, inversedBy="infectedPeople")
+     */
+    private $contactPersons;
 
     public function __construct()
     {
@@ -321,36 +321,6 @@ class InfectedPerson
         }
     }
 
-    /**
-     * @return Collection|ContactPerson[]
-     */
-    public function getContactPersons(): Collection
-    {
-        return $this->contactPersons;
-    }
-
-    public function addContactPerson(ContactPerson $contactPerson): self
-    {
-        if (!$this->contactPersons->contains($contactPerson)) {
-            $this->contactPersons[] = $contactPerson;
-            $contactPerson->setInfectedPerson($this);
-        }
-
-        return $this;
-    }
-
-    public function removeContactPerson(ContactPerson $contactPerson): self
-    {
-        if ($this->contactPersons->removeElement($contactPerson)) {
-            // set the owning side to null (unless already changed)
-            if ($contactPerson->getInfectedPerson() === $this) {
-                $contactPerson->setInfectedPerson(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getMailSendAt(): ?\DateTimeInterface
     {
         return $this->mailSendAt;
@@ -402,5 +372,29 @@ class InfectedPerson
     public function __toString(): string
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    /**
+     * @return Collection|ContactPerson[]
+     */
+    public function getContactPersons(): Collection
+    {
+        return $this->contactPersons;
+    }
+
+    public function addContactPerson(ContactPerson $contactPerson): self
+    {
+        if (!$this->contactPersons->contains($contactPerson)) {
+            $this->contactPersons[] = $contactPerson;
+        }
+
+        return $this;
+    }
+
+    public function removeContactPerson(ContactPerson $contactPerson): self
+    {
+        $this->contactPersons->removeElement($contactPerson);
+
+        return $this;
     }
 }

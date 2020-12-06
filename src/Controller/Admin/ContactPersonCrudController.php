@@ -3,9 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ContactPerson;
+use App\Form\InfectedPersonType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -35,7 +36,10 @@ class ContactPersonCrudController extends AbstractCrudController
             'contacted',
             DateTimeField::new('contactDate'),
             'tested',
-            AssociationField::new('infectedPerson'),
+            CollectionField::new('infectedPeople')
+                ->setEntryIsComplex(true)
+                ->setEntryType(InfectedPersonType::class)
+                ->hideOnIndex(),
         ];
     }
 }
