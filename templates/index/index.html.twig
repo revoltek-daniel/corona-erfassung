@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Corona Erfassung{% endblock %}
+
+{% block body %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {% else %}
+        <a href="{{ path('app_login') }}">Bitte einloggen</a>
+    {% endif %}
+
+{% endblock %}
