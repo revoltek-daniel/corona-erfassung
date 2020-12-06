@@ -84,7 +84,7 @@ class Infected
     /**
      * @ORM\Column(type="boolean")
      */
-    private $positiveTest;
+    private $positiveTest = false;
 
     /**
      * @ORM\Column(type="boolean")
