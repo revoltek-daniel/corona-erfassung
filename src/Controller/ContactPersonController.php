@@ -54,6 +54,7 @@ class ContactPersonController extends AbstractController
                 $contactPerson->addInfectedPerson($infectedPerson);
                 $entityManager->persist($contactPerson);
             }
+            $infectedPerson->setContactsCollected(true);
             $entityManager->flush();
 
             return $this->redirectToRoute('contact_person_success');
