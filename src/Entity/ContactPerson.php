@@ -78,7 +78,7 @@ class ContactPerson
     /**
      * @ORM\ManyToOne(targetEntity=InfectedPerson::class, inversedBy="contactPersons")
      */
-    private $InfectedPerson;
+    private $infectedPerson;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -224,12 +224,12 @@ class ContactPerson
 
     public function getInfectedPerson(): ?InfectedPerson
     {
-        return $this->InfectedPerson;
+        return $this->infectedPerson;
     }
 
-    public function setInfectedPerson(?InfectedPerson $InfectedPerson): self
+    public function setInfectedPerson(?InfectedPerson $infectedPerson): self
     {
-        $this->InfectedPerson = $InfectedPerson;
+        $this->infectedPerson = $infectedPerson;
 
         return $this;
     }
@@ -244,5 +244,10 @@ class ContactPerson
         $this->salutation = $salutation;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 }

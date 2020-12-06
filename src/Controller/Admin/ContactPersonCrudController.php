@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\ContactPerson;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
@@ -34,6 +35,7 @@ class ContactPersonCrudController extends AbstractCrudController
             'contacted',
             DateTimeField::new('contactDate'),
             'tested',
+            AssociationField::new('infectedPerson'),
         ];
     }
 }

@@ -398,4 +398,9 @@ class InfectedPerson
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
 }
