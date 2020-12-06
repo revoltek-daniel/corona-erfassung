@@ -1,4 +1,11 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{% set prototype = form_widget(form.contactPersons.vars.prototype) %}
+
+    <ul class="contact-persons" data-prototype="{{ prototype|e('html_attr') }}">
+        <li>{{ prototype| raw }}</li>
+    </ul>
+
+
+<br/>
+<button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

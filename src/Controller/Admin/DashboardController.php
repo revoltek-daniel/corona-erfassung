@@ -17,7 +17,10 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
-        return parent::index();
+        return $this->render('dashboard/welcome.html.twig', [
+            'dashboard_controller_filepath' => (new \ReflectionClass(static::class))->getFileName(),
+            'dashboard_controller_class' => (new \ReflectionClass(static::class))->getShortName(),
+        ]);
     }
 
     public function configureDashboard(): Dashboard

@@ -113,6 +113,11 @@ class InfectedPerson
      */
     private $contactTrackingId;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $contactsCollected = false;
+
     public function __construct()
     {
         $this->contactPersons = new ArrayCollection();
@@ -378,6 +383,18 @@ class InfectedPerson
     public function setContactTrackingId(?string $contactTrackingId): self
     {
         $this->contactTrackingId = $contactTrackingId;
+
+        return $this;
+    }
+
+    public function getContactsCollected(): ?bool
+    {
+        return $this->contactsCollected;
+    }
+
+    public function setContactsCollected(bool $contactsCollected): self
+    {
+        $this->contactsCollected = $contactsCollected;
 
         return $this;
     }

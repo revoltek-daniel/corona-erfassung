@@ -8,10 +8,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Routing\Annotation\Route;
 
 class InfectedCrudController extends AbstractCrudController
@@ -24,6 +26,7 @@ class InfectedCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            ChoiceField::new('salutation')->setChoices(['Herr' => 'mr', 'Frau' => 'mrs', 'Divers' => 'div']),
             'firstname',
             'lastname',
             TextField::new('street')->hideOnIndex(),
@@ -36,6 +39,7 @@ class InfectedCrudController extends AbstractCrudController
             'quarantineEnd',
             'positiveTest',
             'inQuarantine',
+            'contactsCollected',
         ];
     }
 

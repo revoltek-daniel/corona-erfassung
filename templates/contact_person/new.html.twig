@@ -3,8 +3,9 @@
 {% block title %}Neue Kontaktpersonen Erfassen{% endblock %}
 
 {% block body %}
-
-        <h1>Kontakpersonen erfassen</h1>
-        {{ include('contact_person/_form.html.twig') }}
+        <div data-controller="contactPersons">
+                <h1>Kontakpersonen erfassen</h1>
+                {{ include('contact_person/_form.html.twig') }}
+        </div>
 
 {% endblock %}
