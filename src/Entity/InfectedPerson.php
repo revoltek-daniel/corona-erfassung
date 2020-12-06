@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\InfectedRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=InfectedRepository::class)
  * @ORM\HasLifecycleCallbacks
  */
-class Infected
+class InfectedPerson
 {
     /**
      * @ORM\Id
@@ -72,7 +74,7 @@ class Infected
     private $modifiedAt;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $quarantineStart;
 
@@ -91,9 +93,14 @@ class Infected
      */
     private $inQuarantine = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ContactPerson::class, mappedBy="InfectedPerson")
+     */
+    private $contactPersons;
+
     public function __construct()
     {
-        $this->quarantineStart = new \DateTime();
+        $this->contactPersons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,7 +209,7 @@ class Infected
         return $this->quarantineStart;
     }
 
-    public function setQuarantineStart(\DateTimeInterface $quarantineStart): self
+    public function setQuarantineStart(?\DateTimeInterface $quarantineStart): self
     {
         $this->quarantineStart = $quarantineStart;
 
@@ -255,7 +262,7 @@ class Infected
 
     /**
      * @param string $phone
-     * @return Infected
+     * @return InfectedPerson
      */
     public function setPhone($phone)
     {
@@ -273,7 +280,7 @@ class Infected
 
     /**
      * @param string $email
-     * @return Infected
+     * @return InfectedPerson
      */
     public function setEmail($email)
     {
@@ -292,5 +299,35 @@ class Infected
         if ($this->getCreatedAt() === null) {
             $this->setCreatedAt(new \DateTime('now'));
         }
+    }
+
+    /**
+     * @return Collection|ContactPerson[]
+     */
+    public function getContactPersons(): Collection
+    {
+        return $this->contactPersons;
+    }
+
+    public function addContactPerson(ContactPerson $contactPerson): self
+    {
+        if (!$this->contactPersons->contains($contactPerson)) {
+            $this->contactPersons[] = $contactPerson;
+            $contactPerson->setInfectedPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContactPerson(ContactPerson $contactPerson): self
+    {
+        if ($this->contactPersons->removeElement($contactPerson)) {
+            // set the owning side to null (unless already changed)
+            if ($contactPerson->getInfectedPerson() === $this) {
+                $contactPerson->setInfectedPerson(null);
+            }
+        }
+
+        return $this;
     }
 }

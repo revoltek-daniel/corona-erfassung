@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Infected;
+use App\Entity\InfectedPerson;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -33,9 +33,9 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
 
             MenuItem::section('Infizierte'),
-            MenuItem::linkToCrud('Infizierte Person erfassen', 'fa fa-tags', Infected::class)
+            MenuItem::linkToCrud('Infizierte Person erfassen', 'fa fa-tags', InfectedPerson::class)
                 ->setAction('new'),
-            MenuItem::linkToCrud('Infizierte', 'fa fa-tags', Infected::class),
+            MenuItem::linkToCrud('Infizierte', 'fa fa-tags', InfectedPerson::class),
 
             MenuItem::section('User')->setPermission('ROLE_ADMIN'),
 //            MenuItem::linkToCrud('User hinzufügen', 'fa fa-tags', User::class)

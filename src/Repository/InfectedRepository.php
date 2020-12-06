@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\Infected;
+use App\Entity\InfectedPerson;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Infected|null find($id, $lockMode = null, $lockVersion = null)
- * @method Infected|null findOneBy(array $criteria, array $orderBy = null)
- * @method Infected[]    findAll()
- * @method Infected[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method InfectedPerson|null find($id, $lockMode = null, $lockVersion = null)
+ * @method InfectedPerson|null findOneBy(array $criteria, array $orderBy = null)
+ * @method InfectedPerson[]    findAll()
+ * @method InfectedPerson[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class InfectedRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Infected::class);
+        parent::__construct($registry, InfectedPerson::class);
     }
 
     // /**

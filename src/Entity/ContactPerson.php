@@ -75,6 +75,11 @@ class ContactPerson
      */
     private $tested;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=InfectedPerson::class, inversedBy="contactPersons")
+     */
+    private $InfectedPerson;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -208,6 +213,18 @@ class ContactPerson
     public function setTested(bool $tested): self
     {
         $this->tested = $tested;
+
+        return $this;
+    }
+
+    public function getInfectedPerson(): ?InfectedPerson
+    {
+        return $this->InfectedPerson;
+    }
+
+    public function setInfectedPerson(?InfectedPerson $InfectedPerson): self
+    {
+        $this->InfectedPerson = $InfectedPerson;
 
         return $this;
     }
