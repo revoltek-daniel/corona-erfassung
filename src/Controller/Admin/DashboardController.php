@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\ContactPerson;
 use App\Entity\InfectedPerson;
 use App\Entity\User;
+use App\Repository\ContactPersonRepository;
+use App\Repository\InfectedRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -14,11 +16,35 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends AbstractDashboardController
 {
     /**
+     * @var InfectedRepository
+     */
+    private $infectedRepository;
+    /**
+     * @var ContactPersonRepository
+     */
+    private $contactPersonRepository;
+
+    public function __construct(InfectedRepository $infectedRepository, ContactPersonRepository $contactPersonRepository)
+    {
+        $this->infectedRepository = $infectedRepository;
+        $this->contactPersonRepository = $contactPersonRepository;
+    }
+
+    /**
      * @Route("/admin", name="admin")
      */
     public function index(): Response
     {
+        $infected = $this->infectedRepository->countInfected();
+
+        $infectedThisWeek = $this->infectedRepository->countInfectedForCurrentWeek();
+
+        $contactPersons = $this->contactPersonRepository->countContacts();
+
         return $this->render('dashboard/welcome.html.twig', [
+            'infected' => $infected,
+            'infectedThisWeek' => $infectedThisWeek,
+            'contactPersons' => $contactPersons,
             'dashboard_controller_filepath' => (new \ReflectionClass(static::class))->getFileName(),
             'dashboard_controller_class' => (new \ReflectionClass(static::class))->getShortName(),
         ]);

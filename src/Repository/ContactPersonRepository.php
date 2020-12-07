@@ -84,4 +84,14 @@ class ContactPersonRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function countContacts(): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->getQuery()
+            ->useQueryCache(true)
+            ->enableResultCache(true, 3600)
+            ->getSingleScalarResult();
+    }
 }

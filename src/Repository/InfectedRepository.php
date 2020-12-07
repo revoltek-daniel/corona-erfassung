@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\InfectedPerson;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method InfectedPerson|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +48,31 @@ class InfectedRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function countInfected(): int
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        return $qb
+            ->select('count(i.id)')
+            ->where($qb->expr()->eq('i.positiveTest', 1))
+            ->getQuery()
+            ->useQueryCache(true)
+            ->enableResultCache(true, 3600)
+            ->getSingleScalarResult();
+    }
+
+    public function countInfectedForCurrentWeek(): int
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        return $qb
+            ->select('count(i.id)')
+            ->where($qb->expr()->eq('i.positiveTest', 1))
+            ->andWhere($qb->expr()->gte('i.quarantineStart', ':thisMonday'))
+            ->setParameter('thisMonday', new \DateTime('this monday'),  \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)
+            ->getQuery()
+            ->useQueryCache(true)
+            ->enableResultCache(true, 3600)
+            ->getSingleScalarResult();
+    }
 }
