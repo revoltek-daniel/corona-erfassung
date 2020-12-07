@@ -1,5 +1,5 @@
 # corona-erfassung
-Kleine Applikation um das erfassen von Corona Infektionen zu erleichtern.
+Kleine Applikation um das Erfassen von Corona Infektionen zu erleichtern.
 
 ###### Installation
 1. `composer install`
