@@ -83,7 +83,7 @@ class ContactPerson
     private $salutation;
 
     /**
-     * @ORM\ManyToMany(targetEntity=InfectedPerson::class, mappedBy="contactPersons")
+     * @ORM\ManyToMany(targetEntity=InfectedPerson::class, mappedBy="contactPersons", cascade={"persist"})
      */
     private $infectedPeople;
 

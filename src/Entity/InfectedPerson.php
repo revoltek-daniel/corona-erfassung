@@ -114,7 +114,7 @@ class InfectedPerson
     private $contactsCollected = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity=ContactPerson::class, inversedBy="infectedPeople")
+     * @ORM\ManyToMany(targetEntity=ContactPerson::class, inversedBy="infectedPeople", cascade={"persist"})
      */
     private $contactPersons;
 
