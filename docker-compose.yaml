@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  database:
+    image: library/mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: start100
+      MYSQL_DATABASE: corona
+    ports:
+      - 3306:3306
